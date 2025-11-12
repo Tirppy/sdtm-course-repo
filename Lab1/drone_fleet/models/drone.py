@@ -29,7 +29,7 @@ class Drone(ABC):
         """Return a short description of drone capabilities."""
         raise NotImplementedError
 
-    def __repr__(self) -> str:  # simple debug representation
+    def __repr__(self) -> str:
         return f"{self.__class__.__name__}(id={self._identifier}, mission={self._mission})"
 
 

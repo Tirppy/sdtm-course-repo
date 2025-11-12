@@ -1,16 +1,25 @@
+from abc import ABC, abstractmethod
 from drone_fleet.models.drone import Drone, SurveyDrone, CargoDrone, CombatDrone
 
 
-class DroneFactory:
-    """Factory Method for creating drones by type string."""
+class DroneFactory(ABC):
+    """Classical GoF Factory Method."""
 
-    @staticmethod
-    def create(drone_type: str, identifier: str) -> Drone:
-        t = drone_type.lower()
-        if t == 'survey':
-            return SurveyDrone(identifier)
-        if t == 'cargo':
-            return CargoDrone(identifier)
-        if t == 'combat':
-            return CombatDrone(identifier)
-        raise ValueError(f"Unknown drone type: {drone_type}")
+    @abstractmethod
+    def create(self, identifier: str) -> Drone:
+        raise NotImplementedError
+
+
+class SurveyDroneFactory(DroneFactory):
+    def create(self, identifier: str) -> Drone:
+        return SurveyDrone(identifier)
+
+
+class CargoDroneFactory(DroneFactory):
+    def create(self, identifier: str) -> Drone:
+        return CargoDrone(identifier)
+
+
+class CombatDroneFactory(DroneFactory):
+    def create(self, identifier: str) -> Drone:
+        return CombatDrone(identifier)

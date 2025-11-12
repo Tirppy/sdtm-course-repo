@@ -1,5 +1,9 @@
 from typing import Optional
-from drone_fleet.factory.drone_factory import DroneFactory
+from drone_fleet.factory.drone_factory import (
+    SurveyDroneFactory,
+    CargoDroneFactory,
+    CombatDroneFactory,
+)
 from drone_fleet.factory.drone_pool import DronePool
 from drone_fleet.factory.mission_builder import MissionBuilder
 from drone_fleet.models.drone import Drone
@@ -23,10 +27,11 @@ class FleetManager:
         return cls._instance
 
     def preload_drones(self) -> None:
+        # Use classical GoF Factory Method: concrete factories create specific drones
         drones = [
-            DroneFactory.create('survey', 'S-1'),
-            DroneFactory.create('cargo', 'C-1'),
-            DroneFactory.create('combat', 'X-1')
+            SurveyDroneFactory().create('S-1'),
+            CargoDroneFactory().create('C-1'),
+            CombatDroneFactory().create('X-1'),
         ]
         self._pool.preload(drones)
 
