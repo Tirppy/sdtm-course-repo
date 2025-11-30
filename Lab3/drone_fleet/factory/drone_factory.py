@@ -3,11 +3,11 @@ from drone_fleet.models.drone import Drone, SurveyDrone, CargoDrone, CombatDrone
 
 
 class DroneFactory(ABC):
-    """Base factory interface for drone creation."""
+    """Creates drone instances of a specific type."""
 
     @abstractmethod
     def create(self, identifier: str) -> Drone:
-        pass
+        raise NotImplementedError
 
 
 class SurveyDroneFactory(DroneFactory):

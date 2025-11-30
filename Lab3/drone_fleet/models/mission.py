@@ -2,7 +2,7 @@ from typing import List, Optional
 
 
 class Mission:
-    """Value object holding mission data."""
+    """Immutable mission object built via MissionBuilder."""
 
     def __init__(self, name: str, waypoints: List[str], duration_minutes: int,
                  priority: int = 3, payload: Optional[str] = None) -> None:

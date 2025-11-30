@@ -4,7 +4,15 @@ from drone_fleet.models.mission import Mission
 
 
 class LegacyMissionAdapter:
-    """Converts legacy mission dict format into Mission."""
+    """Converts legacy mission dict format to a Mission.
+
+    Keys:
+      - title -> name
+      - wps -> waypoints
+      - len -> duration (minutes)
+      - prio -> priority
+      - cargo -> payload
+    """
 
     def __init__(self, legacy_data: Dict[str, Any]) -> None:
         self._data = legacy_data

@@ -3,7 +3,7 @@ from drone_fleet.models.mission import Mission
 
 
 class MissionBuilder:
-    """Fluent builder for Mission objects."""
+    """Helper for incremental Mission construction."""
 
     def __init__(self) -> None:
         self._name: Optional[str] = None

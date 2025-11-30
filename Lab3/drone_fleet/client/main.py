@@ -1,19 +1,13 @@
 from drone_fleet.domain.fleet_manager import FleetManager
-from drone_fleet.utilities.observer import ConsoleObserver, MissionCountObserver
+from drone_fleet.utilities.strategies import PrioritySelectionStrategy
 
 
 def demo():
     fm = FleetManager.instance()
-
-    # Attach observers (behavioral pattern demonstration)
-    console = ConsoleObserver()
-    counter = MissionCountObserver()
-    fm.register_observer(console)
-    fm.register_observer(counter)
-
     fm.preload_drones()
     print("Pool stats after preload:", fm.pool_stats())
 
+    # Mission creation (helper builder kept from previous lab, comments trimmed)
     mission = (
         fm.create_mission("Survey Sector 7")
         .add_waypoint("WP-1")
@@ -23,27 +17,44 @@ def demo():
         .payload("HD Camera")
         .build()
     )
-    print("Mission built:", mission)
+    print("Created mission:", mission)
 
+    # Legacy mission adaptation (now just functional, no pattern mention)
     legacy = {"title": "Legacy Patrol", "wps": ["L1", "L2"], "len": 15, "prio": 4}
     adapted_mission = fm.adapt_legacy_mission(legacy)
-    print("Legacy adapted:", adapted_mission)
+    print("Adapted legacy mission:", adapted_mission)
 
+    # Assign mission using current (simple) selection strategy
     drone = fm.assign_mission_to_drone(mission)
     print("Assigned", drone)
-    print("Capabilities:", drone.capabilities())
+    print("Drone capabilities:", drone.capabilities())
     print("Pool stats after checkout:", fm.pool_stats())
 
+    # Enhance drone capabilities dynamically
     enhanced = fm.enhance_drone(drone, stealth=True, range_extender=True)
-    print("Enhanced capabilities:", enhanced.capabilities())
+    print("Enhanced drone capabilities:", enhanced.capabilities())
 
     fm.release_drone(drone)
+    print("Released drone")
     print("Pool stats after release:", fm.pool_stats())
 
-    lazy = fm.lazy_drone("combat", "Lazy-X")
-    print("Lazy proxy capabilities:", lazy.capabilities())
+    # Lazy drone creation (instantiated only when needed)
 
-    print("Observer mission stats:", counter.stats())
+    # Strategy pattern demonstration: switch to priority-based selection
+    fm.set_selection_strategy(PrioritySelectionStrategy())
+    high_priority_mission = (
+        fm.create_mission("Urgent Recon")
+        .add_waypoint("HP-1")
+        .duration(10)
+        .priority(5)
+        .payload("Thermal Camera")
+        .build()
+    )
+    chosen = fm.assign_mission_to_drone(high_priority_mission)
+    print("High priority mission assigned to:", chosen)
+    lazy = fm.lazy_drone("combat", "Lazy-X")
+    print("Lazy drone created (proxy):", lazy)
+    print("Lazy drone capabilities (triggers real creation):", lazy.capabilities())
 
 
 if __name__ == "__main__":

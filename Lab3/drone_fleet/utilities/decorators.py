@@ -3,7 +3,7 @@ from drone_fleet.models.drone import Drone
 
 
 class DroneDecorator(Drone, ABC):
-    """Wraps a drone to extend capabilities at runtime."""
+    """Wraps a Drone to extend capabilities."""
 
     def __init__(self, wrapped: Drone) -> None:  # type: ignore[override]
         super().__init__(wrapped.identifier)

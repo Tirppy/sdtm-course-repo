@@ -1,9 +1,10 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
+from typing import Optional
 
 
 class Drone(ABC):
-    """Base drone abstraction."""
+    """Abstract base class for all drones."""
 
     def __init__(self, identifier: str) -> None:
         self._identifier = identifier
@@ -25,7 +26,8 @@ class Drone(ABC):
 
     @abstractmethod
     def capabilities(self) -> str:
-        pass
+        """Return a short description of drone capabilities."""
+        raise NotImplementedError
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(id={self._identifier}, mission={self._mission})"

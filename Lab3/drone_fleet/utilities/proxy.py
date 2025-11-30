@@ -3,7 +3,7 @@ from typing import Callable, Optional
 
 
 class DroneProxy(Drone):
-    """Lazy creation wrapper for a concrete Drone."""
+    """Lazy creation of a concrete Drone via a factory callable."""
 
     def __init__(self, identifier: str, factory: Callable[[], Drone]) -> None:
         super().__init__(identifier)

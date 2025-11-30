@@ -1,9 +1,9 @@
-from typing import List
+from typing import List, Optional
 from drone_fleet.models.drone import Drone
 
 
 class DronePool:
-    """Fixed-size pool managing reusable Drone instances."""
+    """Holds reusable Drone instances and manages in-use tracking."""
 
     def __init__(self, max_size: int) -> None:
         self._available: List[Drone] = []
@@ -27,6 +27,18 @@ class DronePool:
             drone.clear_mission()
             self._in_use.remove(drone)
             self._available.append(drone)
+
+    def checkout_specific(self, drone: Drone) -> Drone:
+        """Checkout an explicitly chosen available drone."""
+        if drone in self._available:
+            self._available.remove(drone)
+            self._in_use.append(drone)
+            return drone
+        raise RuntimeError("Requested drone is not available")
+
+    @property
+    def available_drones(self) -> List[Drone]:
+        return list(self._available)
 
     @property
     def stats(self) -> str:
